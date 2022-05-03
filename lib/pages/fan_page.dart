@@ -50,7 +50,9 @@ class _FanPageState extends State<FanPage> {
                             final shouldLogout =
                                 await showLogOutDialog(context);
                             if (shouldLogout) {
-                              await _auth.logOut();
+                              log('Log out START');
+                              _auth.logOut();
+                              log('Log out done');
                               Navigator.of(context).pushNamedAndRemoveUntil(
                                 loginRoute,
                                 (_) => false,

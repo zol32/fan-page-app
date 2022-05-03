@@ -6,7 +6,9 @@ import 'package:myfanpage/pages/post/create_post_page.dart';
 import 'package:myfanpage/pages/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:myfanpage/services/auth/auth_service.dart';
+import 'package:myfanpage/services/google_sign_in.dart';
 import 'constants/routes.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,22 +37,23 @@ class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: AuthService().initialize(),
-      builder: (context, snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.done:
-            final user = AuthService().currentUser;
-            if (user != null) {
-              return const FanPage();
-            } else {
-              return const LoginPage();
+  Widget build(BuildContext context) => ChangeNotifierProvider(
+        create: ((context) => GoogleSignInProvider()),
+        child: FutureBuilder(
+          future: AuthService().initialize(),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.done:
+                final user = AuthService().currentUser;
+                if (user != null) {
+                  return const LoginPage();
+                } else {
+                  return const LoginPage();
+                }
+              default:
+                return const CircularProgressIndicator();
             }
-          default:
-            return const CircularProgressIndicator();
-        }
-      },
-    );
-  }
+          },
+        ),
+      );
 }

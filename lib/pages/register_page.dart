@@ -3,7 +3,10 @@ import 'package:myfanpage/constants/routes.dart';
 import 'package:myfanpage/services/auth/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:myfanpage/services/auth/cloud_service.dart';
+import 'package:myfanpage/services/google_sign_in.dart';
 import 'dart:developer' show log;
+
+import 'package:provider/provider.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -126,6 +129,16 @@ class _RegisterPageState extends State<RegisterPage> {
             },
             child: const Text('Register'),
           ),
+          const SizedBox(height: 25),
+          ElevatedButton(
+            child: const Text('Sign In with Google'),
+            onPressed: () {
+              final provider =
+                  Provider.of<GoogleSignInProvider>(context, listen: false);
+              provider.googleLogin();
+            },
+          ),
+          const SizedBox(height: 25),
           TextButton(
             onPressed: () {
               Navigator.of(context).pushNamedAndRemoveUntil(

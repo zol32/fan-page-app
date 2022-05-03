@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:myfanpage/constants/routes.dart';
 import 'package:myfanpage/services/auth/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart' as FirebaseUser show User;
+import 'package:myfanpage/services/google_sign_in.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -75,6 +77,20 @@ class _LoginPageState extends State<LoginPage> {
             },
             child: const Text('Login'),
           ),
+          const SizedBox(height: 25),
+          ElevatedButton(
+            child: const Text('Sign In with Google'),
+            onPressed: () {
+              final provider =
+                  Provider.of<GoogleSignInProvider>(context, listen: false);
+              provider.googleLogin();
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                fanpageRoute,
+                (route) => false,
+              );
+            },
+          ),
+          const SizedBox(height: 25),
           TextButton(
             onPressed: () {
               Navigator.of(context).pushNamedAndRemoveUntil(
